@@ -1,9 +1,13 @@
 mod check_for_duplicates;
 mod depth_first_search;
+mod run_length_encoding;
 mod tests;
 use check_for_duplicates::{has_duplicates_map, has_duplicates_set};
 
-use crate::depth_first_search::*;
+use crate::{
+    depth_first_search::*,
+    run_length_encoding::{run_length_decode, run_length_encode},
+};
 
 fn main() {
     let nums = vec![1, 2, 3, 4, 5, 6, 7, 8, 4, 9];
@@ -47,4 +51,38 @@ fn main() {
         Some(path) => println!("path: {:?}", path),
         None => println!("no path found"),
     }
+
+    let res = run_length_decode(&[('A', 0)]);
+
+    println!("res: {}", res);
+
+    let res = run_length_decode(&[('B', 1)]);
+
+    println!("res: {}", res);
+
+    let res = run_length_decode(&[('A', 5), ('z', 3), ('B', 1)]);
+
+    println!("res: {}", res);
+
+    let res = run_length_encode("");
+
+    println!("res: {:?}", res);
+
+    let res = run_length_encode("A");
+
+    println!("res: {:?}", res);
+
+    let res = run_length_encode("AA");
+
+    println!("res: {:?}", res);
+
+    let res = run_length_encode("AAAABBBCCDAA");
+
+    println!("res: {:?}", res);
+
+    let res = run_length_encode(
+        "Hello, my name is Tom. I live at 1234 Jackson Lane. I like to swim. I like to read books.",
+    );
+
+    println!("res: {:?}", res);
 }
