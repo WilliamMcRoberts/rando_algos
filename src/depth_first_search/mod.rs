@@ -1,11 +1,9 @@
 use std::collections::HashSet;
 use std::collections::VecDeque;
 
-// Perform a Depth First Search Algorithm to find an element in a graph
-//
-// Return a Option<Vec<_>> with history of verteces visited
+// Return an Option<Vec<_>> with history of verteces visited
 // or None if the element does not exist in the graph
-pub fn depth_first_search(graph: &Graph, root: Vertex, objective: Vertex) -> Option<Vec<u32>> {
+pub fn depth_first_search(graph: &Graph, root: Vertex, target: Vertex) -> Option<Vec<u32>> {
     let mut visited: HashSet<Vertex> = HashSet::new();
     let mut history: Vec<u32> = Vec::new();
     let mut queue = VecDeque::new();
@@ -18,9 +16,9 @@ pub fn depth_first_search(graph: &Graph, root: Vertex, objective: Vertex) -> Opt
         // Add the current vertex in the history
         history.push(current_vertex.value());
 
-        // check if vertex equals the objective if so return the history
-        if current_vertex == objective {
-            // Return the Optional with the history of visiteds vertex
+        // check if vertex equals the target if so return the history
+        if current_vertex == target {
+            // Return the history
             return Some(history);
         }
 
@@ -34,7 +32,7 @@ pub fn depth_first_search(graph: &Graph, root: Vertex, objective: Vertex) -> Opt
         }
     }
 
-    // If all verteces are visited and the objective is not found return None
+    // Return None if all verteces are visited and the target is not found
     None
 }
 
