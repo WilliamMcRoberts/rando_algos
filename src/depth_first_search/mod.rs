@@ -1,10 +1,8 @@
-use std::collections::HashSet;
 use std::collections::VecDeque;
 
 // Return an Option<Vec<_>> with history of verteces visited
 // or None if the element does not exist in the graph
 pub fn depth_first_search(graph: &Graph, root: Vertex, target: Vertex) -> Option<Vec<u32>> {
-    let mut visited: HashSet<Vertex> = HashSet::new();
     let mut history: Vec<u32> = Vec::new();
     let mut queue = VecDeque::new();
 
@@ -24,9 +22,7 @@ pub fn depth_first_search(graph: &Graph, root: Vertex, target: Vertex) -> Option
 
         // iterate over neighbors of current vertex
         for neighbor in current_vertex.neighbors(graph).into_iter().rev() {
-            // Mark as visited
-            if visited.insert(neighbor) {
-                // Add the neighbor in front of queue
+            if !history.contains(&neighbor.value()) {
                 queue.push_front(neighbor);
             }
         }

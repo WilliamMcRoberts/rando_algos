@@ -81,8 +81,12 @@ fn main() {
     println!("res: {:?}", res);
 
     let res = run_length_encode(
-        "Hello, my name is Tom. I live at 1234 Jackson Lane. I like to swim. I like to read books.",
+        "Hellooooo, my name is Tom. I liiiiive at 1234444 Jacksooon Laaane. IiiiiI like   to swim. I like tooo read books.",
     );
 
     println!("res: {:?}", res);
+
+    let decoded = run_length_decode(&res);
+
+    println!("decoded: {}", decoded);
 }
