@@ -81,7 +81,8 @@ fn main() {
     println!("res: {:?}", res);
 
     let res = run_length_encode(
-        "Hellooooo, my name is Tom. I liiiiive at 1234444 Jacksooon Laaane. IiiiiI like   to swim. I like tooo read books.",
+        "Hellooooo, my name is Tom. I liiiiive at 1234444 Jacksooon Laaane. IiiiiI like   to swim.
+         I like tooo read books.",
     );
 
     println!("res: {:?}", res);
