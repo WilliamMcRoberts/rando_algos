@@ -1,7 +1,10 @@
+mod auto_complete_using_trie;
+mod binary_search;
 mod check_for_duplicates;
 mod depth_first_search;
+mod hamming_distance;
+mod palindrome;
 mod run_length_encoding;
-mod tests;
 use check_for_duplicates::{has_duplicates_map, has_duplicates_set};
 
 use crate::{
@@ -90,4 +93,59 @@ fn main() {
     let decoded = run_length_decode(&res);
 
     println!("decoded: {}", decoded);
+
+    let str = "racecar";
+
+    let is_palindrome = palindrome::is_palindrome(str);
+
+    println!("{} is palindrome: {}", str, is_palindrome);
+
+    let pref = "ap";
+
+    let words = vec![
+        "apple".to_owned(),
+        "ape".to_owned(),
+        "apricot".to_owned(),
+        "apocalypse".to_owned(),
+        "yo".to_owned(),
+        "alien".to_owned(),
+    ];
+
+    let mut auto_complete = auto_complete_using_trie::Autocomplete::new();
+
+    auto_complete.insert_words(words);
+
+    let results = auto_complete.find_words(pref.to_owned());
+
+    println!("results: {:?}", results);
+
+    let str1 = "hello";
+    let str2 = "jelly";
+
+    let distance = hamming_distance::hamming_distance(str1, str2);
+
+    println!("distance: {}", distance);
+
+    let items = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    let target = 7;
+
+    let index = binary_search::binary_search(&target, &items);
+
+    match index {
+        Some(i) => println!("found {} at index {}", target, i),
+        None => println!("{} not found", target),
+    }
+
+    let items = vec![];
+
+    let target = "a";
+
+    let index = binary_search::binary_search(&target, &items);
+
+    println!("index: {:?}", index);
+
+    let index = binary_search::binary_search(&5, &[4, 3, 2, 1]);
+
+    println!("index: {:?}", index);
 }
