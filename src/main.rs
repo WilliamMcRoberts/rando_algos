@@ -136,16 +136,4 @@ fn main() {
         Some(i) => println!("found {} at index {}", target, i),
         None => println!("{} not found", target),
     }
-
-    let items = vec![];
-
-    let target = "a";
-
-    let index = binary_search::binary_search(&target, &items);
-
-    println!("index: {:?}", index);
-
-    let index = binary_search::binary_search(&5, &[4, 3, 2, 1]);
-
-    println!("index: {:?}", index);
 }
