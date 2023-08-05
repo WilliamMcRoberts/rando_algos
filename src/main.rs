@@ -3,6 +3,7 @@ mod binary_search;
 mod check_for_duplicates;
 mod depth_first_search;
 mod hamming_distance;
+mod linked_list;
 mod palindrome;
 mod run_length_encoding;
 use check_for_duplicates::{has_duplicates_map, has_duplicates_set};
