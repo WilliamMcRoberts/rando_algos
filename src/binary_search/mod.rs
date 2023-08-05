@@ -48,22 +48,22 @@ mod tests {
 
     #[test]
     fn search_strings_asc() {
-        let index = binary_search(&"a", &["a", "b", "c", "d", "google", "zoo"]);
+        let index = binary_search(&"a", &["a", "b", "c", "d", "hello", "yo"]);
         assert_eq!(index, Some(0));
 
-        let index = binary_search(&"google", &["a", "b", "c", "d", "google", "zoo"]);
+        let index = binary_search(&"hello", &["a", "b", "c", "d", "hello", "yo"]);
         assert_eq!(index, Some(4));
     }
 
     #[test]
     fn search_strings_desc() {
-        let index = binary_search(&"a", &["zoo", "google", "d", "c", "b", "a"]);
+        let index = binary_search(&"a", &["yo", "hello", "d", "c", "b", "a"]);
         assert_eq!(index, Some(5));
 
-        let index = binary_search(&"zoo", &["zoo", "google", "d", "c", "b", "a"]);
+        let index = binary_search(&"yo", &["yo", "hello", "d", "c", "b", "a"]);
         assert_eq!(index, Some(0));
 
-        let index = binary_search(&"google", &["zoo", "google", "d", "c", "b", "a"]);
+        let index = binary_search(&"hello", &["yo", "hello", "d", "c", "b", "a"]);
         assert_eq!(index, Some(1));
     }
 

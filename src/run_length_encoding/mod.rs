@@ -41,11 +41,11 @@ fn test_run_length_encode() {
     let res = run_length_encode("A");
     assert_eq!(res, [('A', 1)]);
 
-    let res = run_length_encode("AA");
-    assert_eq!(res, [('A', 2)]);
+    let res = run_length_encode("YOOOOOOOOOO");
+    assert_eq!(res, [('Y', 1), ('O', 10)]);
 
-    let res = run_length_encode("AAAABBBCCDAA");
-    assert_eq!(res, [('A', 4), ('B', 3), ('C', 2), ('D', 1), ('A', 2)]);
+    let res = run_length_encode("HELLO");
+    assert_eq!(res, [('H', 1), ('E', 1), ('L', 2), ('O', 1)]);
 
     let res = run_length_encode("Rust-Trends");
     assert_eq!(
