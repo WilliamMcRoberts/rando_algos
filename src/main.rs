@@ -1,11 +1,15 @@
+mod anagram;
 mod auto_complete_using_trie;
 mod binary_search;
+mod binary_search_tree;
+mod breadth_first_search;
 mod check_for_duplicates;
 mod depth_first_search;
 mod hamming_distance;
 mod linked_list;
 mod palindrome;
 mod run_length_encoding;
+mod two_sum;
 use check_for_duplicates::{has_duplicates_map, has_duplicates_set};
 
 use crate::{

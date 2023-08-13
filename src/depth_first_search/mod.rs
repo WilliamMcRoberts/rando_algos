@@ -1,34 +1,40 @@
+use std::collections::HashSet;
 use std::collections::VecDeque;
 
-// Return an Option<Vec<_>> with history of verteces visited
-// or None if the element does not exist in the graph
-pub fn depth_first_search(graph: &Graph, root: Vertex, target: Vertex) -> Option<Vec<u32>> {
+// Perform a Depth First Search Algorithm to find a element in a graph
+//
+// Return a Optional with a vector with history of vertex visiteds
+// or a None if the element not exists on the graph
+pub fn depth_first_search(graph: &Graph, root: Vertex, objective: Vertex) -> Option<Vec<u32>> {
+    let mut visited: HashSet<Vertex> = HashSet::new();
     let mut history: Vec<u32> = Vec::new();
     let mut queue = VecDeque::new();
-
     queue.push_back(root);
 
-    // While the queue is not empty
-    // get the first element
+    // While there is an element in the queue
+    // get the first element of the vertex queue
     while let Some(current_vertex) = queue.pop_front() {
-        // Add the current vertex in the history
+        // Added current vertex in the history of visiteds vertex
         history.push(current_vertex.value());
 
-        // check if vertex equals the target if so return the history
-        if current_vertex == target {
-            // Return the history
+        // Verify if this vertex is the objective
+        if current_vertex == objective {
+            // Return the Optional with the history of visiteds vertex
             return Some(history);
         }
 
-        // iterate over neighbors of current vertex
+        // For each over the neighbors of current vertex
         for neighbor in current_vertex.neighbors(graph).into_iter().rev() {
-            if !history.contains(&neighbor.value()) {
+            // Insert in the HashSet of visiteds if this value not exist yet
+            if visited.insert(neighbor) {
+                // Add the neighbor on front of queue
                 queue.push_front(neighbor);
             }
         }
     }
 
-    // Return None if all verteces are visited and the target is not found
+    // If all vertex is visited and the objective is not found
+    // return a Optional with None value
     None
 }
 
@@ -36,10 +42,8 @@ pub fn depth_first_search(graph: &Graph, root: Vertex, target: Vertex) -> Option
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub struct Vertex(u32);
-
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub struct Edge(u32, u32);
-
 #[derive(Clone)]
 pub struct Graph {
     #[allow(dead_code)]
@@ -47,10 +51,15 @@ pub struct Graph {
     edges: Vec<Edge>,
 }
 
-// Graph constructor
 impl Graph {
     pub fn new(vertices: Vec<Vertex>, edges: Vec<Edge>) -> Self {
         Graph { vertices, edges }
+    }
+}
+
+impl From<u32> for Vertex {
+    fn from(item: u32) -> Self {
+        Vertex(item)
     }
 }
 
@@ -69,117 +78,115 @@ impl Vertex {
     }
 }
 
-// impl From trait for Vertex and Edge
-impl From<u32> for Vertex {
-    fn from(item: u32) -> Self {
-        Vertex(item)
-    }
-}
-
 impl From<(u32, u32)> for Edge {
     fn from(item: (u32, u32)) -> Self {
         Edge(item.0, item.1)
     }
 }
 
-#[test]
-fn find_1_fail() {
-    let vertices = vec![1, 2, 3, 4, 5, 6, 7];
-    let edges = vec![(1, 2), (1, 3), (2, 4), (2, 5), (3, 6), (3, 7)];
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    let root = 1;
-    let objective = 99;
+    #[test]
+    fn find_1_fail() {
+        let vertices = vec![1, 2, 3, 4, 5, 6, 7];
+        let edges = vec![(1, 2), (1, 3), (2, 4), (2, 5), (3, 6), (3, 7)];
 
-    let graph = Graph::new(
-        vertices.into_iter().map(|v| v.into()).collect(),
-        edges.into_iter().map(|e| e.into()).collect(),
-    );
+        let root = 1;
+        let objective = 99;
 
-    assert_eq!(
-        depth_first_search(&graph, root.into(), objective.into()),
-        None
-    );
-}
+        let graph = Graph::new(
+            vertices.into_iter().map(|v| v.into()).collect(),
+            edges.into_iter().map(|e| e.into()).collect(),
+        );
 
-#[test]
-fn find_1_success() {
-    let vertices = vec![1, 2, 3, 4, 5, 6, 7];
-    let edges = vec![(1, 2), (1, 3), (2, 4), (2, 5), (3, 6), (3, 7)];
+        assert_eq!(
+            depth_first_search(&graph, root.into(), objective.into()),
+            None
+        );
+    }
 
-    let root = 1;
-    let objective = 7;
+    #[test]
+    fn find_1_sucess() {
+        let vertices = vec![1, 2, 3, 4, 5, 6, 7];
+        let edges = vec![(1, 2), (1, 3), (2, 4), (2, 5), (3, 6), (3, 7)];
 
-    let correct_path = vec![1, 2, 4, 5, 3, 6, 7];
+        let root = 1;
+        let objective = 7;
 
-    let graph = Graph::new(
-        vertices.into_iter().map(|v| v.into()).collect(),
-        edges.into_iter().map(|e| e.into()).collect(),
-    );
+        let correct_path = vec![1, 2, 4, 5, 3, 6, 7];
 
-    assert_eq!(
-        depth_first_search(&graph, root.into(), objective.into()),
-        Some(correct_path)
-    );
-}
+        let graph = Graph::new(
+            vertices.into_iter().map(|v| v.into()).collect(),
+            edges.into_iter().map(|e| e.into()).collect(),
+        );
 
-#[test]
-fn find_2_success() {
-    let vertices = vec![0, 1, 2, 3, 4, 5, 6, 7];
-    let edges = vec![
-        (0, 1),
-        (1, 3),
-        (3, 2),
-        (2, 1),
-        (3, 4),
-        (4, 5),
-        (5, 7),
-        (7, 6),
-        (6, 4),
-    ];
+        assert_eq!(
+            depth_first_search(&graph, root.into(), objective.into()),
+            Some(correct_path)
+        );
+    }
 
-    let root = 0;
-    let objective = 6;
+    #[test]
+    fn find_2_sucess() {
+        let vertices = vec![0, 1, 2, 3, 4, 5, 6, 7];
+        let edges = vec![
+            (0, 1),
+            (1, 3),
+            (3, 2),
+            (2, 1),
+            (3, 4),
+            (4, 5),
+            (5, 7),
+            (7, 6),
+            (6, 4),
+        ];
 
-    let correct_path = vec![0, 1, 3, 2, 4, 5, 7, 6];
+        let root = 0;
+        let objective = 6;
 
-    let graph = Graph::new(
-        vertices.into_iter().map(|v| v.into()).collect(),
-        edges.into_iter().map(|e| e.into()).collect(),
-    );
+        let correct_path = vec![0, 1, 3, 2, 4, 5, 7, 6];
 
-    assert_eq!(
-        depth_first_search(&graph, root.into(), objective.into()),
-        Some(correct_path)
-    );
-}
+        let graph = Graph::new(
+            vertices.into_iter().map(|v| v.into()).collect(),
+            edges.into_iter().map(|e| e.into()).collect(),
+        );
 
-#[test]
-fn find_3_success() {
-    let vertices = vec![0, 1, 2, 3, 4, 5, 6, 7];
-    let edges = vec![
-        (0, 1),
-        (1, 3),
-        (3, 2),
-        (2, 1),
-        (3, 4),
-        (4, 5),
-        (5, 7),
-        (7, 6),
-        (6, 4),
-    ];
+        assert_eq!(
+            depth_first_search(&graph, root.into(), objective.into()),
+            Some(correct_path)
+        );
+    }
 
-    let root = 0;
-    let objective = 4;
+    #[test]
+    fn find_3_sucess() {
+        let vertices = vec![0, 1, 2, 3, 4, 5, 6, 7];
+        let edges = vec![
+            (0, 1),
+            (1, 3),
+            (3, 2),
+            (2, 1),
+            (3, 4),
+            (4, 5),
+            (5, 7),
+            (7, 6),
+            (6, 4),
+        ];
 
-    let correct_path = vec![0, 1, 3, 2, 4];
+        let root = 0;
+        let objective = 4;
 
-    let graph = Graph::new(
-        vertices.into_iter().map(|v| v.into()).collect(),
-        edges.into_iter().map(|e| e.into()).collect(),
-    );
+        let correct_path = vec![0, 1, 3, 2, 4];
 
-    assert_eq!(
-        depth_first_search(&graph, root.into(), objective.into()),
-        Some(correct_path)
-    );
+        let graph = Graph::new(
+            vertices.into_iter().map(|v| v.into()).collect(),
+            edges.into_iter().map(|e| e.into()).collect(),
+        );
+
+        assert_eq!(
+            depth_first_search(&graph, root.into(), objective.into()),
+            Some(correct_path)
+        );
+    }
 }
