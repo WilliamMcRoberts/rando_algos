@@ -8,12 +8,12 @@ use std::collections::VecDeque;
 pub fn depth_first_search(graph: &Graph, root: Vertex, objective: Vertex) -> Option<Vec<u32>> {
     let mut visited: HashSet<Vertex> = HashSet::new();
     let mut history: Vec<u32> = Vec::new();
-    let mut queue = VecDeque::new();
-    queue.push_back(root);
+    let mut stack = Vec::new();
+    stack.push(root);
 
     // While there is an element in the queue
     // get the first element of the vertex queue
-    while let Some(current_vertex) = queue.pop_front() {
+    while let Some(current_vertex) = stack.pop() {
         // Added current vertex in the history of visiteds vertex
         history.push(current_vertex.value());
 
@@ -28,7 +28,7 @@ pub fn depth_first_search(graph: &Graph, root: Vertex, objective: Vertex) -> Opt
             // Insert in the HashSet of visiteds if this value not exist yet
             if visited.insert(neighbor) {
                 // Add the neighbor on front of queue
-                queue.push_front(neighbor);
+                stack.push(neighbor);
             }
         }
     }

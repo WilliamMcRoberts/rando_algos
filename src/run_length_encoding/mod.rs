@@ -1,9 +1,11 @@
 pub fn run_length_encode(text: &str) -> Vec<(char, i32)> {
     let mut count = 1;
     let mut encoded: Vec<(char, i32)> = vec![];
+    let text_len = text.len();
 
     for (i, c) in text.chars().enumerate() {
-        if i + 1 < text.len() && c == text.chars().nth(i + 1).unwrap() {
+        let next_idx = i + 1;
+        if next_idx < text_len && c == text.chars().nth(next_idx).unwrap() {
             count += 1;
         } else {
             encoded.push((c, count));
@@ -15,12 +17,10 @@ pub fn run_length_encode(text: &str) -> Vec<(char, i32)> {
 }
 
 pub fn run_length_decode(encoded: &[(char, i32)]) -> String {
-    let res = encoded
+    encoded
         .iter()
         .map(|x| (x.0).to_string().repeat(x.1 as usize))
-        .collect::<String>();
-
-    res
+        .collect::<String>()
 }
 
 #[test]

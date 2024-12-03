@@ -8,8 +8,14 @@ mod depth_first_search;
 mod hamming_distance;
 mod linked_list;
 mod palindrome;
+mod quick_sort;
 mod run_length_encoding;
+mod sorting;
 mod two_sum;
+
+use std::sync::Arc;
+
+use anagram::angrm::is_anagram;
 use check_for_duplicates::{has_duplicates_map, has_duplicates_set};
 
 use crate::{
@@ -89,8 +95,10 @@ fn main() {
     println!("res: {:?}", res);
 
     let res = run_length_encode(
-        "Hellooooo, my name is Tom. I liiiiive at 1234444 Jacksooon Laaane. IiiiiI like   to swim.
-         I like tooo read books.",
+        "Hellooooo, my name is Tom. 
+            I liiiiive at 1234444 Jacksooon Laaane. 
+            IiiiiI like   to swim.
+             I like tooo read books.",
     );
 
     println!("res: {:?}", res);
@@ -107,20 +115,13 @@ fn main() {
 
     let pref = "ap";
 
-    let words = vec![
-        "apple".to_owned(),
-        "ape".to_owned(),
-        "apricot".to_owned(),
-        "apocalypse".to_owned(),
-        "yo".to_owned(),
-        "alien".to_owned(),
-    ];
+    let words = vec!["apple", "ape", "apricot", "apocalypse", "yo", "alien"];
 
     let mut auto_complete = auto_complete_using_trie::Autocomplete::new();
 
-    auto_complete.insert_words(words);
+    auto_complete.insert_words(&words);
 
-    let results = auto_complete.find_words(pref.to_owned());
+    let results = auto_complete.find_words(pref);
 
     println!("results: {:?}", results);
 
@@ -131,14 +132,53 @@ fn main() {
 
     println!("distance: {}", distance);
 
-    let items = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let items = &[1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     let target = 7;
 
-    let index = binary_search::binary_search(&target, &items);
-
-    match index {
-        Some(i) => println!("found {} at index {}", target, i),
-        None => println!("{} not found", target),
+    if let Some(i) = binary_search::binary_search(&target, items) {
+        println!("found {} at index {}", target, i);
+    } else {
+        println!("{} not found", target);
     }
+
+    let s1 = "anagram";
+
+    let s2 = "nagaraM";
+
+    let is_anagram = is_anagram(s1, s2);
+
+    println!("{} and {} are anagrams: {}", s1, s2, is_anagram);
+
+    let a = "yooooooooo".to_string();
+    let b = "what up".to_string();
+
+    let c = get_biggest(&a, &b);
+
+    println!("Biggest: {}", c);
+
+    println!("A and B: {}, {}", a, b);
+}
+
+fn get_biggest<'a>(a: &'a str, b: &'a str) -> &'a str {
+    if a.len() < b.len() {
+        return b;
+    } else {
+        return a;
+    }
+}
+
+struct MyId(String);
+
+impl From<MyId> for String {
+    fn from(MyId(value): MyId) -> Self {
+        value
+    }
+}
+
+#[allow(dead_code)]
+pub struct Person {
+    id: Option<u32>,
+    name: String,
+    age: u32,
 }

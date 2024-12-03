@@ -1,3 +1,5 @@
+pub mod angrm;
+
 pub fn check_anagram(s: &str, t: &str) -> bool {
     let mut s = s.to_ascii_lowercase().chars().collect::<Vec<_>>();
     let mut t = t.to_ascii_lowercase().chars().collect::<Vec<_>>();

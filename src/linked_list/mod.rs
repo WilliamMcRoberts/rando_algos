@@ -193,12 +193,12 @@ impl<T> LinkedList<T> {
     }
 }
 
-impl<T> Drop for LinkedList<T> {
-    fn drop(&mut self) {
-        // Pop items until there are none left
-        while self.delete_head().is_some() {}
-    }
-}
+// impl<T> Drop for LinkedList<T> {
+//     fn drop(&mut self) {
+// Pop items until there are none left
+// while self.delete_head().is_some() {}
+// }
+// }
 
 impl<T> Display for LinkedList<T>
 where
